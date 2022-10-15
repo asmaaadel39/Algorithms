@@ -1,27 +1,70 @@
 #include <iostream>
 using namespace std;
-double Insertion_Sort( int n,double array[]) {
-    int index = 0;
-    int i=1, element, j;
+#include <bits/stdc++.h>
+// given function
+long long m_w, m_z;
+long long get_random() {
+    m_z = 36969 * (m_z & 65535) + (m_z >> 16);
+    m_w = 18000 * (m_w & 65535) + (m_w >> 16);
+    long long res = (m_z << 16) + m_w;
+    return res % 1000000000;
+}
 
-    while ( i < n) {
+void swap(int *z, int *y) {
+    int  tmp = *z;
+    *z = *y;
+    *y = tmp;
+}
 
-        element = array[i];
 
-        for (j = i - 1;j >= 0 && array[j] > element;) {
-            array[j + 1] = array[j];
-            j = j - 1;
-            index++;
+double divide(int a,int b,int array[])
+{
+    int var = array[b];
+    int  index = a;
+    int j = a;
+    while ( j <= b - 1)
+    {
+
+        if (array[j] <= var) {
+            swap(&array[index], &array[j]);
+            index ++;
         }
-        array[j + 1] = element;
-        i++;
+        j++;
     }
+    swap(&array[index], &array[b]);
     return index;
 }
+
+
+
+
+int kthminimum(int array[], int a, int b, int j) {
+
+   int index = divide(a, b, array);
+
+    if ( index- a == j - 1)
+        return array[index];
+    while(index - a > j - 1)
+    {
+      index--;
+        return kthminimum(array, a, index, j);
+    }
+
+    return kthminimum(array, index + 1, b, j - index + a - 1);
+}
+
 int main() {
-    //first test case 1,1,1,2,2 output 0
-    //second test case 2,1,3,1,2 output 4
-    double arr[] = {1,1,1,2,2};
-    cout<<Insertion_Sort(5, arr);
+    int N,K,array[N],i=0;
+    cin >> N >> K >> m_w >> m_z;
+    while(i<N)
+    {
+        array[i] = get_random();
+        i++;
+
+    }
+    cout << kthminimum(array, 0, N - 1, K);
     return 0;
 }
+
+
+
